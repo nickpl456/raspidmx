@@ -80,14 +80,14 @@ void usage(void)
     fprintf(stderr, "    -b - set background colour 16 bit RGBA\n");
     fprintf(stderr, "         e.g. 0x000F is opaque black\n");
     fprintf(stderr, "    -d - Raspberry Pi display number\n");
-    fprintf(stderr, "    -f - fade image in and out \n");
-    fprintf(stderr, "         5-30 is the recomended range\n");
+    fprintf(stderr, "    -f - fade image alpha from 0-255 on open and 255-0 on close, this roughly controls the speed of the fade by setting step size\n");
+    fprintf(stderr, "         5-30 is the recommended range\n");
     fprintf(stderr, "    -l - DispmanX layer number\n");
     fprintf(stderr, "    -x - offset (pixels from the left)\n");
     fprintf(stderr, "    -y - offset (pixels from the top)\n");
     fprintf(stderr, "    -t - timeout in ms\n");
     fprintf(stderr, "    -n - non-interactive mode\n");
-    
+
     exit(EXIT_FAILURE);
 }
 
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
 
             displayNumber = strtol(optarg, NULL, 10);
             break;
-                
+
         case 'f':
 
             fade = strtol(optarg, NULL, 10);
@@ -147,7 +147,7 @@ int main(int argc, char *argv[])
             yOffset = strtol(optarg, NULL, 10);
             yOffsetSet = true;
             break;
-        
+
         case 't':
 
             timeout = atoi(optarg);
@@ -302,7 +302,7 @@ int main(int argc, char *argv[])
 
     result = vc_dispmanx_update_submit_sync(update);
     assert(result == 0);
-    
+
     while (run)
     {
         int c = 0;
