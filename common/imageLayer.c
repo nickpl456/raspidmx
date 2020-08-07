@@ -139,8 +139,8 @@ addElementImageLayer(
 {
     VC_DISPMANX_ALPHA_T alpha =
     {
-        DISPMANX_FLAGS_ALPHA_FROM_SOURCE, 
-        255, /*alpha 0->255*/
+        DISPMANX_FLAGS_ALPHA_MIX, 
+        0, /*alpha 0->255*/
         0
     };
 
@@ -226,6 +226,37 @@ moveImageLayer(
                                           ELEMENT_CHANGE_DEST_RECT,
                                           0,
                                           255,
+                                          &(il->dstRect),
+                                          &(il->srcRect),
+                                          0,
+                                          DISPMANX_NO_ROTATE);
+    assert(result == 0);
+}
+
+//-------------------------------------------------------------------------
+
+void
+changeAlphaImageLayer(
+    IMAGE_LAYER_T *il,
+    int32_t xOffset,
+    int32_t yOffset,
+    int32_t alpha,
+    DISPMANX_UPDATE_HANDLE_T update)
+{
+
+    vc_dispmanx_rect_set(&(il->dstRect),
+                         xOffset,
+                         yOffset,
+                         il->image.width,
+                         il->image.height);
+
+
+    int result =
+    vc_dispmanx_element_change_attributes(update,
+                                          il->element,
+                                          ELEMENT_CHANGE_OPACITY,
+                                          0,
+                                          alpha,
                                           &(il->dstRect),
                                           &(il->srcRect),
                                           0,
