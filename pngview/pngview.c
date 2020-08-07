@@ -80,8 +80,8 @@ void usage(void)
     fprintf(stderr, "    -b - set background colour 16 bit RGBA\n");
     fprintf(stderr, "         e.g. 0x000F is opaque black\n");
     fprintf(stderr, "    -d - Raspberry Pi display number\n");
-    fprintf(stderr, "    -f - fade image in and out 0-255 \n");
-    fprintf(stderr, "         4 is the recomended step\n");
+    fprintf(stderr, "    -f - fade image in and out \n");
+    fprintf(stderr, "         5-30 is the recomended range\n");
     fprintf(stderr, "    -l - DispmanX layer number\n");
     fprintf(stderr, "    -x - offset (pixels from the left)\n");
     fprintf(stderr, "    -y - offset (pixels from the top)\n");
