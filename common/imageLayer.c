@@ -139,7 +139,7 @@ addElementImageLayer(
 {
     VC_DISPMANX_ALPHA_T alpha =
     {
-        DISPMANX_FLAGS_ALPHA_MIX, 
+        DISPMANX_FLAGS_ALPHA_MIX,
         0, /*alpha 0->255*/
         0
     };
