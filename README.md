@@ -1,1 +1,1 @@
-This is a customize version of https://github.com/AndrewFromMelbourne/raspidmx that added fade in/out function to pngview with no regard for what it breaks in the other programs (Life, Manelbrot and Game at a minimum are affected/broken by the changes make to imageLayer.c) 
+This is a customize version of https://github.com/AndrewFromMelbourne/raspidmx that adds fade in/out function to pngview with no regard for what it breaks in the other programs (Life, Manelbrot and Game at a minimum are affected/broken by the changes make to imageLayer.c) 
