@@ -75,17 +75,19 @@ signalHandler(
 void usage(void)
 {
     fprintf(stderr, "Usage: %s ", program);
-    fprintf(stderr, "[-b <RGBA>] [-d <number>] [-l <layer>] ");
+    fprintf(stderr, "[-b <RGBA>] [-d <number>] [-f <number 0-255>] [-l <layer>] ");
     fprintf(stderr, "[-x <offset>] [-y <offset>] <file.png>\n");
     fprintf(stderr, "    -b - set background colour 16 bit RGBA\n");
     fprintf(stderr, "         e.g. 0x000F is opaque black\n");
     fprintf(stderr, "    -d - Raspberry Pi display number\n");
+    fprintf(stderr, "    -f - fade image in and out 0-255 \n");
+    fprintf(stderr, "         4 is the recomended step\n");
     fprintf(stderr, "    -l - DispmanX layer number\n");
     fprintf(stderr, "    -x - offset (pixels from the left)\n");
     fprintf(stderr, "    -y - offset (pixels from the top)\n");
     fprintf(stderr, "    -t - timeout in ms\n");
     fprintf(stderr, "    -n - non-interactive mode\n");
-
+    
     exit(EXIT_FAILURE);
 }
 
@@ -96,6 +98,7 @@ int main(int argc, char *argv[])
     uint16_t background = 0x000F;
     int32_t layer = 1;
     uint32_t displayNumber = 0;
+    uint32_t fade = 0;
     int32_t xOffset = 0;
     int32_t yOffset = 0;
     uint32_t timeout = 0;
@@ -109,7 +112,7 @@ int main(int argc, char *argv[])
 
     int opt = 0;
 
-    while ((opt = getopt(argc, argv, "b:d:l:x:y:t:n")) != -1)
+    while ((opt = getopt(argc, argv, "b:d:f:l:x:y:t:n")) != -1)
     {
         switch(opt)
         {
@@ -121,6 +124,11 @@ int main(int argc, char *argv[])
         case 'd':
 
             displayNumber = strtol(optarg, NULL, 10);
+            break;
+                
+        case 'f':
+
+            fade = strtol(optarg, NULL, 10);
             break;
 
         case 'l':
@@ -269,6 +277,32 @@ int main(int argc, char *argv[])
     // Sleep for 10 milliseconds every run-loop
     const int sleepMilliseconds = 10;
 
+    if (fade > 0 && fade < 255) {
+	int a = 0;
+	while (a < 255-fade) {
+
+    	  a=a+(1*fade);
+
+          update = vc_dispmanx_update_start(0);
+          assert(update != 0);
+
+          changeAlphaImageLayer(&imageLayer, xOffset, yOffset, a, update);
+
+          result = vc_dispmanx_update_submit_sync(update);
+          assert(result == 0);
+
+        }
+
+    }
+
+    update = vc_dispmanx_update_start(0);
+    assert(update != 0);
+
+    changeAlphaImageLayer(&imageLayer, xOffset, yOffset, 255, update);
+
+    result = vc_dispmanx_update_submit_sync(update);
+    assert(result == 0);
+    
     while (run)
     {
         int c = 0;
@@ -367,6 +401,26 @@ int main(int argc, char *argv[])
     //---------------------------------------------------------------------
 
     keyboardReset();
+
+    //---------------------------------------------------------------------
+
+    if (fade > 0 && fade < 255) {
+	int a = 256;
+	while (a > fade) {
+
+    	  a=a-(1*fade);
+
+          update = vc_dispmanx_update_start(0);
+          assert(update != 0);
+
+          changeAlphaImageLayer(&imageLayer, xOffset, yOffset, a, update);
+
+          result = vc_dispmanx_update_submit_sync(update);
+          assert(result == 0);
+
+        }
+
+    }
 
     //---------------------------------------------------------------------
 
