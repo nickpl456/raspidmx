@@ -96,6 +96,13 @@ moveImageLayer(
     int32_t yOffset,
     DISPMANX_UPDATE_HANDLE_T update);
 
+void
+changeAlphaImageLayer(
+    IMAGE_LAYER_T *il,
+    int32_t xOffset,
+    int32_t yOffset,
+    int32_t alpha,
+    DISPMANX_UPDATE_HANDLE_T update);
 
 void destroyImageLayer(IMAGE_LAYER_T *il);
 
